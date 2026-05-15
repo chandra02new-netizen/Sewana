@@ -15,17 +15,24 @@
             @endrole
         </div>
 
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+        <form method="GET" action="{{ url()->current() }}" class="admin-toolbar">
+            <div class="input-group admin-search-box">
+                <span class="input-group-text bg-white border-0 ps-4">
+                    <i class="bi bi-search text-muted"></i>
+                </span>
+                <input type="text" name="search" class="form-control border-0 shadow-none py-2"
+                    placeholder="Cari pelanggan atau produk..." value="{{ request('search') }}"
+                    aria-label="Cari pelanggan atau produk">
             </div>
-        @elseif (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            <div class="admin-toolbar-actions">
+                @if (request('search'))
+                    <a href="{{ url()->current() }}" class="btn btn-outline-secondary rounded-pill px-3">
+                        Reset
+                    </a>
+                @endif
+                <button class="btn btn-dark rounded-pill px-4 fw-bold" type="submit">Cari</button>
             </div>
-        @endif
+        </form>
 
         @if ($orders->count() > 0)
             <div class="row g-4">
@@ -83,8 +90,7 @@
                                         <h5 class="fw-bold text-dark mb-0 me-2">
                                             {{ $order->product->name ?? 'Produk Tidak Ditemukan' }}
                                         </h5>
-                                        <span
-                                            class="badge bg-{{ $statusClass }}-subtle text-{{ $statusClass }} border border-{{ $statusClass }} rounded-pill px-3 py-2">
+                                        <span class="admin-status-badge admin-status-{{ $statusClass }}">
                                             <i class="bi bi-circle-fill small me-1"></i> {{ strtoupper($statusLabel) }}
                                         </span>
                                         <span
@@ -157,11 +163,13 @@
                                             <i class="bi bi-check-lg"></i> Setujui
                                         </button>
 
-                                        <form action="{{ route('pegawai.orders.reject', $order->id) }}" method="POST">
+                                        <form action="{{ route('pegawai.orders.reject', $order->id) }}" method="POST"
+                                            data-confirm data-confirm-title="Tolak pesanan?"
+                                            data-confirm-message="Pesanan #{{ $order->id }} akan dibatalkan dan tidak bisa diproses sebagai sewa aktif."
+                                            data-confirm-label="Tolak Pesanan">
                                             @csrf
                                             @method('PATCH')
-                                            <button class="btn btn-danger rounded-3 w-100 fw-semibold shadow-sm"
-                                                onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?');">
+                                            <button class="btn btn-danger rounded-3 w-100 fw-semibold shadow-sm">
                                                 <i class="bi bi-x-lg"></i> Batalkan
                                             </button>
                                         </form>
@@ -182,9 +190,14 @@
                                                         <div class="modal-body">
                                                             <p class="text-muted small mb-3">Silakan unggah bukti bahwa
                                                                 barang sudah disetujui untuk disewa atau diambil.</p>
-                                                            <input type="file" name="bukti" class="form-control mb-3"
+                                                            <input type="file" name="bukti" class="form-control mb-2"
+                                                                accept="image/jpeg,image/png,image/webp"
                                                                 required onchange="preview{{ $order->id }}(event)"
                                                                 aria-label="Unggah bukti transaksi pesanan {{ $order->id }}">
+                                                            <div class="admin-form-help mb-3">Format JPG, JPEG, PNG, atau WEBP. Maksimal 10 MB.</div>
+                                                            @error('bukti')
+                                                                <div class="admin-field-error mb-3">{{ $message }}</div>
+                                                            @enderror
 
                                                             <div class="text-center bg-light rounded-3 p-2 admin-upload-preview">
                                                                 <img id="img{{ $order->id }}" class="rounded"
@@ -226,8 +239,8 @@
                 @endforeach
             </div>
 
-            <div class="d-flex justify-content-center mt-5">
-                {{ $orders->links() }}
+            <div class="admin-pagination">
+                {{ $orders->links('pagination::bootstrap-5') }}
             </div>
         @else
             <div class="admin-empty-state">

@@ -6,8 +6,10 @@
 
 .dashboard-container.staff-dashboard,
 .dashboard-container.owner-dashboard {
-    max-width: 1120px;
-    padding: 28px 20px;
+    width: min(100%, var(--admin-content-max));
+    max-width: var(--admin-content-max);
+    margin: 0 auto;
+    padding: 0;
 }
 
 .staff-dashboard .staff-hero,
@@ -152,7 +154,7 @@
 @media (max-width: 991.98px) {
     .dashboard-container.staff-dashboard,
     .dashboard-container.owner-dashboard {
-        padding: 24px 16px;
+        padding: 0;
     }
 }
 

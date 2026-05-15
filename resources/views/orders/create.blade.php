@@ -102,8 +102,11 @@
                             <div class="mb-3">
                                 <label class="form-label fw-semibold" for="identity-photo">Unggah Foto Identitas (KTP / SIM)</label>
                                 <input type="file" id="identity-photo" name="identity_photo" class="form-control"
-                                    accept="image/*" required>
-                                <small class="text-muted">Format: JPG, PNG, maks</small>
+                                    accept="image/jpeg,image/png,image/webp" required>
+                                <small class="text-muted">Format JPG, JPEG, PNG, atau WEBP. Maksimal 10 MB.</small>
+                                @error('identity_photo')
+                                    <div class="admin-field-error">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             {{-- Pilih Varian --}}
@@ -113,7 +116,7 @@
                                     {{ $availableVariantCount === 0 ? 'disabled' : '' }}>
                                     <option value="">-- Pilih Varian --</option>
                                     @foreach ($product->variants as $variant)
-                                        <option value="{{ $variant->id }}"
+                                        <option value="{{ $variant->id }}" data-price="{{ $variant->price }}"
                                             {{ old('variant_id') == $variant->id ? 'selected' : '' }}
                                             {{ $variant->stock <= 0 ? 'disabled' : '' }}>
                                             {{ $variant->size }} - {{ $variant->color }} |
@@ -150,12 +153,23 @@
                             </div>
 
                             {{-- Ringkasan --}}
-                            <div class="border rounded-4 p-3 bg-light mb-3">
-                                <p class="fw-semibold mb-1 text-dark">Ringkasan Sewa</p>
-                                <ul class="list-unstyled mb-0 small text-muted">
-                                    <li>Harga per hari mengikuti varian yang dipilih</li>
-                                    <li>Total harga dihitung otomatis oleh sistem saat konfirmasi</li>
-                                </ul>
+                            <div class="admin-estimate-box p-3 mb-3">
+                                <p class="fw-semibold mb-2 text-dark">Estimasi Sewa</p>
+                                <div class="row g-3 small">
+                                    <div class="col-sm-4">
+                                        <div class="admin-mini-label">Durasi</div>
+                                        <div class="admin-estimate-value" id="rent-days-estimate">-</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="admin-mini-label">Harga/Hari</div>
+                                        <div class="admin-estimate-value" id="daily-price-estimate">-</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="admin-mini-label">Total</div>
+                                        <div class="admin-estimate-value text-primary" id="total-price-estimate">-</div>
+                                    </div>
+                                </div>
+                                <div class="admin-form-help mt-2">Estimasi mengikuti varian dan tanggal yang dipilih. Total final tetap dihitung ulang oleh sistem saat submit.</div>
                             </div>
 
                             {{-- Buttons --}}
@@ -184,6 +198,32 @@
     <script>
         const startDateInput = document.getElementById('start-date');
         const endDateInput = document.getElementById('end-date');
+        const variantInput = document.getElementById('variant-id');
+        const rentDaysEstimate = document.getElementById('rent-days-estimate');
+        const dailyPriceEstimate = document.getElementById('daily-price-estimate');
+        const totalPriceEstimate = document.getElementById('total-price-estimate');
+
+        const formatRupiah = (value) => new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            maximumFractionDigits: 0
+        }).format(value);
+
+        function updateEstimate() {
+            const selectedOption = variantInput?.selectedOptions?.[0];
+            const price = Number(selectedOption?.dataset.price || 0);
+            const start = startDateInput?.value ? new Date(startDateInput.value + 'T00:00:00') : null;
+            const end = endDateInput?.value ? new Date(endDateInput.value + 'T00:00:00') : null;
+            let days = 0;
+
+            if (start && end && end >= start) {
+                days = Math.round((end - start) / 86400000) + 1;
+            }
+
+            rentDaysEstimate.textContent = days ? `${days} hari` : '-';
+            dailyPriceEstimate.textContent = price ? formatRupiah(price) : '-';
+            totalPriceEstimate.textContent = price && days ? formatRupiah(price * days) : '-';
+        }
 
         if (startDateInput && endDateInput) {
             startDateInput.addEventListener('change', function () {
@@ -192,7 +232,14 @@
                 if (endDateInput.value && this.value && endDateInput.value < this.value) {
                     endDateInput.value = this.value;
                 }
+
+                updateEstimate();
             });
+
+            endDateInput.addEventListener('change', updateEstimate);
         }
+
+        variantInput?.addEventListener('change', updateEstimate);
+        updateEstimate();
     </script>
 @endsection

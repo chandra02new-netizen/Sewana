@@ -12,7 +12,7 @@
             </div>
 
             <form method="GET" action="{{ route('pegawai.orders.all') }}"
-                class="d-flex flex-wrap flex-md-nowrap gap-2 align-items-center">
+                class="admin-filter-toolbar">
                 <div class="input-group input-group-sm shadow-sm admin-filter-search">
                     <span class="input-group-text bg-white border-end-0 text-muted">
                         <i class="bi bi-search"></i>
@@ -31,7 +31,7 @@
                     <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
                 </select>
 
-                <div class="d-flex gap-2">
+                <div class="admin-toolbar-actions">
                     <button type="submit" class="btn btn-sm btn-dark shadow-sm px-3">
                         Filter
                     </button>
@@ -45,19 +45,6 @@
                 </div>
             </form>
         </div>
-
-        {{-- Alert --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-            </div>
-        @elseif (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-            </div>
-        @endif
 
         {{-- Daftar Pesanan --}}
         @if ($orders->count() > 0)
@@ -189,8 +176,8 @@
             </div>
 
             {{-- Pagination --}}
-            <div class="d-flex justify-content-center mt-5">
-                {{ $orders->links() }}
+            <div class="admin-pagination">
+                {{ $orders->links('pagination::bootstrap-5') }}
             </div>
         @else
             {{-- Empty State --}}

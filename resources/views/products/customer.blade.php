@@ -14,16 +14,21 @@
         </div>
 
         {{-- Search --}}
-        <form method="GET" action="{{ route('penyewa.products.index') }}" class="mb-4">
+        <form method="GET" action="{{ route('penyewa.products.index') }}" class="admin-toolbar">
             <div class="input-group admin-search-box">
+                <span class="input-group-text bg-white border-0 ps-4">
+                    <i class="bi bi-search text-muted"></i>
+                </span>
                 <input type="text" name="search" class="form-control" placeholder="Cari produk..."
                     value="{{ request('search') }}" aria-label="Cari produk">
-                <button class="btn btn-dark" type="submit" aria-label="Cari produk"><i class="bi bi-search"></i></button>
+            </div>
+            <div class="admin-toolbar-actions">
                 @if (request('search'))
-                    <a href="{{ route('penyewa.products.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-x-circle"></i> Reset
+                    <a href="{{ route('penyewa.products.index') }}" class="btn btn-outline-secondary rounded-pill px-3">
+                        Reset
                     </a>
                 @endif
+                <button class="btn btn-dark rounded-pill px-4 fw-bold" type="submit">Cari</button>
             </div>
         </form>
 
@@ -215,7 +220,7 @@
             @endforelse
         </div>
 
-        <div class="mt-4">
+        <div class="admin-pagination">
             {{ $products->links('pagination::bootstrap-5') }}
         </div>
     </div>

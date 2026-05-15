@@ -22,23 +22,27 @@
         </div>
 
         {{-- SEARCH SECTION --}}
-        <div class="row mb-4 justify-content-center">
-            <div class="col-md-8 col-lg-7">
-                <form method="GET"
-                    action="{{ auth()->user()->hasRole('pegawai') ? route('pegawai.products.index') : route('pemilik.products.index') }}">
-                    <div class="input-group admin-search-box mx-auto">
-                        <span class="input-group-text bg-white border-0 ps-4">
-                            <i class="bi bi-search text-muted"></i>
-                        </span>
-                        <input type="text" name="search" class="form-control border-0 shadow-none py-2"
-                            placeholder="Cari nama produk atau SKU..." value="{{ request('search') }}"
-                            aria-label="Cari nama produk atau SKU">
-
-                        <button class="btn btn-dark px-4 fw-bold" type="submit">Cari</button>
-                    </div>
-                </form>
+        <form method="GET"
+            action="{{ auth()->user()->hasRole('pegawai') ? route('pegawai.products.index') : route('pemilik.products.index') }}"
+            class="admin-toolbar">
+            <div class="input-group admin-search-box">
+                <span class="input-group-text bg-white border-0 ps-4">
+                    <i class="bi bi-search text-muted"></i>
+                </span>
+                <input type="text" name="search" class="form-control border-0 shadow-none py-2"
+                    placeholder="Cari nama atau deskripsi produk..." value="{{ request('search') }}"
+                    aria-label="Cari nama atau deskripsi produk">
             </div>
-        </div>
+            <div class="admin-toolbar-actions">
+                @if (request('search'))
+                    <a href="{{ auth()->user()->hasRole('pegawai') ? route('pegawai.products.index') : route('pemilik.products.index') }}"
+                        class="btn btn-outline-secondary rounded-pill px-3">
+                        Reset
+                    </a>
+                @endif
+                <button class="btn btn-dark rounded-pill px-4 fw-bold" type="submit">Cari</button>
+            </div>
+        </form>
 
         {{-- Product grid --}}
         <div class="row admin-product-grid">
@@ -103,11 +107,12 @@
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <form action="{{ route('pegawai.products.destroy', $product) }}" method="POST"
-                                            class="flex-fill">
+                                            class="flex-fill" data-confirm data-confirm-title="Hapus produk?"
+                                            data-confirm-message="Produk {{ $product->name }} akan dihapus jika tidak memiliki transaksi aktif."
+                                            data-confirm-label="Hapus Produk">
                                             @csrf @method('DELETE')
                                             <button class="btn btn-light text-danger btn-sm w-100 border rounded-3"
-                                                type="submit" aria-label="Hapus produk {{ $product->name }}"
-                                                onclick="return confirm('Hapus?')">
+                                                type="submit" aria-label="Hapus produk {{ $product->name }}">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
@@ -192,22 +197,9 @@
             @endforelse
         </div>
 
-        <div class="mt-5">
+        <div class="admin-pagination">
             {{ $products->links('pagination::bootstrap-5') }}
         </div>
     </div>
-
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-        </div>
-    @elseif (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-        </div>
-    @endif
-
 
 @endsection

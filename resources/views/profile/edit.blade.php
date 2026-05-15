@@ -140,8 +140,10 @@
                             Setelah akun dihapus, semua data yang terkait dengan akun ini akan ikut terhapus permanen.
                         </p>
 
-                        <form method="POST" action="{{ route('profile.destroy') }}"
-                            onsubmit="return confirm('Yakin ingin menghapus akun ini secara permanen?')">
+                        <form method="POST" action="{{ route('profile.destroy') }}" data-confirm
+                            data-confirm-title="Hapus akun permanen?"
+                            data-confirm-message="Akun dan data terkait akan dihapus permanen setelah password dikonfirmasi."
+                            data-confirm-label="Hapus Akun">
                             @csrf
                             @method('DELETE')
 

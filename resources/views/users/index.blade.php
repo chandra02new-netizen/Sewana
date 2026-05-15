@@ -11,14 +11,7 @@
             </div>
         </div>
 
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-3">
-                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        <form method="GET" action="{{ route('pemilik.users.index') }}" class="mb-4">
+        <form method="GET" action="{{ route('pemilik.users.index') }}" class="admin-toolbar">
             <div class="input-group admin-search-box">
                 <span class="input-group-text bg-transparent border-0 ps-4 text-muted">
                     <i class="bi bi-search"></i>
@@ -26,13 +19,14 @@
                 <input type="text" name="search" value="{{ request('search') }}"
                     class="form-control border-0 shadow-none py-2 bg-transparent" placeholder="Cari nama atau email...">
 
+            </div>
+            <div class="admin-toolbar-actions">
                 @if (request('search'))
-                    <a href="{{ route('pemilik.users.index') }}"
-                        class="btn btn-white border-0 text-muted d-flex align-items-center px-3">
-                        <i class="bi bi-x-circle-fill"></i>
+                    <a href="{{ route('pemilik.users.index') }}" class="btn btn-outline-secondary rounded-pill px-3">
+                        Reset
                     </a>
                 @endif
-                <button class="btn btn-dark px-4 fw-bold border-0" type="submit">Cari</button>
+                <button class="btn btn-dark rounded-pill px-4 fw-bold" type="submit">Cari</button>
             </div>
         </form>
 
@@ -123,7 +117,7 @@
             @endforelse
         </div>
 
-        <div class="mt-5 d-flex justify-content-center">
+        <div class="admin-pagination">
             {{ $users->withQueryString()->links('pagination::bootstrap-5') }}
         </div>
 

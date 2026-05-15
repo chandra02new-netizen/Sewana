@@ -11,13 +11,6 @@
             </div>
         </div>
 
-        {{-- Alert Message --}}
-        @if (session('success'))
-            <div class="alert alert-success rounded-4 border-0 shadow-sm">{{ session('success') }}</div>
-        @elseif (session('error'))
-            <div class="alert alert-danger rounded-4 border-0 shadow-sm">{{ session('error') }}</div>
-        @endif
-
         {{-- Daftar Pesanan --}}
         @if ($orders->count() > 0)
             <div class="row g-4">
@@ -83,12 +76,14 @@
                                         @php
                                             $statusClass = match ($order->order_status) {
                                                 'pending' => 'warning',
-                                                'approved' => 'success',
-                                                'rejected' => 'danger',
+                                                'approved' => 'primary',
+                                                'rented' => 'info',
+                                                'returned' => 'success',
+                                                'cancelled', 'rejected' => 'danger',
                                                 'finished' => 'secondary',
-                                                default => 'light',
+                                                default => 'secondary',
                                             };
-                                            $paymentClass = $order->payment_status === 'paid' ? 'success' : 'secondary';
+                                            $paymentClass = $order->payment_status === 'paid' ? 'success' : 'danger';
                                             $statusLabel = match ($order->order_status) {
                                                 'pending' => 'Menunggu',
                                                 'approved' => 'Disetujui',
@@ -108,11 +103,11 @@
 
                                         {{-- Status --}}
                                         <div class="d-flex flex-column align-items-center gap-2 w-100">
-                                            <span class="badge-status bg-{{ $statusClass }}">
+                                            <span class="admin-status-badge admin-status-{{ $statusClass }}">
                                                 {{ $statusLabel }}
                                             </span>
 
-                                            <span class="badge-status bg-{{ $paymentClass }}">
+                                            <span class="admin-status-badge admin-status-{{ $paymentClass }}">
                                                 {{ $paymentLabel }}
                                             </span>
                                         </div>
@@ -125,7 +120,9 @@
                                             </a>
 
                                             <form action="{{ route('penyewa.orders.destroy', $order->id) }}" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus pesanan ini?')">
+                                                data-confirm data-confirm-title="Hapus pesanan?"
+                                                data-confirm-message="Pesanan #{{ $order->id }} akan dihapus dari daftar Anda jika masih bisa dihapus."
+                                                data-confirm-label="Hapus Pesanan">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn-action btn-danger"

@@ -21,19 +21,6 @@
             </a>
         </div>
 
-        {{-- Alert Notification --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-            </div>
-        @elseif (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-4" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-            </div>
-        @endif
-
         {{-- PHP Variables Preparation --}}
         @php
             $status = $order->order_status;
@@ -97,13 +84,11 @@
 
                             {{-- Badges Status & Pembayaran --}}
                             <div class="d-flex gap-2 flex-wrap">
-                                <span
-                                    class="badge bg-{{ $statusData['color'] }} bg-opacity-10 text-{{ $statusData['color'] }} px-3 py-2 rounded-pill fw-semibold border border-{{ $statusData['color'] }} border-opacity-25">
+                                <span class="admin-status-badge admin-status-{{ $statusData['color'] }}">
                                     <i class="bi bi-{{ $statusData['icon'] }} me-1"></i>
                                     {{ strtoupper($statusData['label']) }}
                                 </span>
-                                <span
-                                    class="badge bg-{{ $paymentClass }} bg-opacity-10 text-{{ $paymentClass }} px-3 py-2 rounded-pill fw-semibold border border-{{ $paymentClass }} border-opacity-25">
+                                <span class="admin-status-badge admin-status-{{ $paymentClass }}">
                                     <i class="bi bi-{{ $paymentIcon }} me-1"></i> {{ strtoupper($paymentLabel) }}
                                 </span>
                             </div>
@@ -283,8 +268,9 @@
                                         </form>
 
                                         <form action="{{ route('pegawai.orders.reject', $order->id) }}" method="POST"
-                                            class="flex-grow-1"
-                                            onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?');">
+                                            class="flex-grow-1" data-confirm data-confirm-title="Tolak pesanan?"
+                                            data-confirm-message="Pesanan #{{ $order->id }} akan dibatalkan dan tidak bisa diproses sebagai sewa aktif."
+                                            data-confirm-label="Tolak Pesanan">
                                             @csrf
                                             @method('PATCH')
                                             <button class="btn btn-outline-danger w-100 rounded-pill fw-semibold bg-white">
@@ -324,7 +310,9 @@
                                     <p class="text-muted small mb-3">Barang sedang disewa. Klik tombol di bawah ini jika barang
                                         sudah dikembalikan oleh pelanggan.</p>
                                     <form action="{{ route('pegawai.orders.returned', $order->id) }}" method="POST"
-                                        onsubmit="return confirm('Pastikan barang telah diterima dan dicek kondisinya. Selesaikan pesanan?');">
+                                        data-confirm data-confirm-title="Selesaikan pesanan?"
+                                        data-confirm-message="Pastikan barang telah diterima dan dicek kondisinya sebelum menandai pesanan #{{ $order->id }} sebagai dikembalikan."
+                                        data-confirm-label="Tandai Dikembalikan" data-confirm-button="btn-info text-white">
                                         @csrf
                                         @method('PATCH')
                                         <button class="btn btn-info w-100 rounded-pill fw-semibold text-white shadow-sm py-2">

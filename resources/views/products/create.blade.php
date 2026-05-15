@@ -53,9 +53,16 @@
                     </div>
 
                     <div class="full-span">
-                        <label class="form-label admin-form-label">Foto Produk</label>
-                        <input type="file" name="images[]" class="form-control" multiple>
-                        <div class="admin-form-help mt-1">Bisa upload lebih dari 1 gambar.</div>
+                        <label class="form-label admin-form-label" for="product-images">Foto Produk</label>
+                        <input type="file" id="product-images" name="images[]" class="form-control"
+                            accept="image/jpeg,image/png,image/webp" multiple>
+                        <div class="admin-form-help mt-1">Format JPG, JPEG, PNG, atau WEBP. Maksimal 10 MB per file, hingga 10 gambar.</div>
+                        @error('images')
+                            <div class="admin-field-error">{{ $message }}</div>
+                        @enderror
+                        @error('images.*')
+                            <div class="admin-field-error">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
@@ -73,21 +80,26 @@
                     <div class="variant-item admin-variant-item">
                         <div class="row g-3">
                             <div class="col-md-2">
-                                <input type="text" name="variants[0][size]" class="form-control" placeholder="Ukuran">
+                                <label class="form-label admin-form-label" for="variant-0-size">Ukuran</label>
+                                <input type="text" id="variant-0-size" name="variants[0][size]" class="form-control" placeholder="Ukuran">
                             </div>
                             <div class="col-md-2">
-                                <input type="text" name="variants[0][color]" class="form-control" placeholder="Warna">
+                                <label class="form-label admin-form-label" for="variant-0-color">Warna</label>
+                                <input type="text" id="variant-0-color" name="variants[0][color]" class="form-control" placeholder="Warna">
                             </div>
                             <div class="col-md-2">
-                                <input type="number" name="variants[0][price]" class="form-control" placeholder="Harga"
+                                <label class="form-label admin-form-label" for="variant-0-price">Harga</label>
+                                <input type="number" id="variant-0-price" name="variants[0][price]" class="form-control" placeholder="Harga"
                                     required>
                             </div>
                             <div class="col-md-2">
-                                <input type="number" name="variants[0][stock]" class="form-control" placeholder="Stok"
+                                <label class="form-label admin-form-label" for="variant-0-stock">Stok</label>
+                                <input type="number" id="variant-0-stock" name="variants[0][stock]" class="form-control" placeholder="Stok"
                                     required>
                             </div>
                             <div class="col-md-4">
-                                <select name="variants[0][status]" class="form-select" required>
+                                <label class="form-label admin-form-label" for="variant-0-status">Status</label>
+                                <select name="variants[0][status]" id="variant-0-status" class="form-select" required>
                                     <option value="tersedia">Tersedia</option>
                                     <option value="disewa">Disewa</option>
                                     <option value="rusak">Rusak</option>
@@ -118,19 +130,24 @@
             <div class="variant-item admin-variant-item">
                 <div class="row g-3">
                     <div class="col-md-2">
-                        <input type="text" name="variants[${variantIndex}][size]" class="form-control" placeholder="Ukuran">
+                        <label class="form-label admin-form-label" for="variant-${variantIndex}-size">Ukuran</label>
+                        <input type="text" id="variant-${variantIndex}-size" name="variants[${variantIndex}][size]" class="form-control" placeholder="Ukuran">
                     </div>
                     <div class="col-md-2">
-                        <input type="text" name="variants[${variantIndex}][color]" class="form-control" placeholder="Warna">
+                        <label class="form-label admin-form-label" for="variant-${variantIndex}-color">Warna</label>
+                        <input type="text" id="variant-${variantIndex}-color" name="variants[${variantIndex}][color]" class="form-control" placeholder="Warna">
                     </div>
                     <div class="col-md-2">
-                        <input type="number" name="variants[${variantIndex}][price]" class="form-control" placeholder="Harga" required>
+                        <label class="form-label admin-form-label" for="variant-${variantIndex}-price">Harga</label>
+                        <input type="number" id="variant-${variantIndex}-price" name="variants[${variantIndex}][price]" class="form-control" placeholder="Harga" required>
                     </div>
                     <div class="col-md-2">
-                        <input type="number" name="variants[${variantIndex}][stock]" class="form-control" placeholder="Stok" required>
+                        <label class="form-label admin-form-label" for="variant-${variantIndex}-stock">Stok</label>
+                        <input type="number" id="variant-${variantIndex}-stock" name="variants[${variantIndex}][stock]" class="form-control" placeholder="Stok" required>
                     </div>
                     <div class="col-md-4">
-                        <select name="variants[${variantIndex}][status]" class="form-select" required>
+                        <label class="form-label admin-form-label" for="variant-${variantIndex}-status">Status</label>
+                        <select name="variants[${variantIndex}][status]" id="variant-${variantIndex}-status" class="form-select" required>
                             <option value="tersedia">Tersedia</option>
                             <option value="disewa">Disewa</option>
                             <option value="rusak">Rusak</option>
