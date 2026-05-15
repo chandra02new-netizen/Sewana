@@ -1,0 +1,11 @@
+/* ===================================================================
+   ADMIN.CSS
+
+   Source CSS for Vite. The import order follows the previous
+   public/css/admin.css cascade so existing screens keep their styling.
+   =================================================================== */
+
+@import url("./admin/components.css");
+@import url("./admin/pages.css");
+@import url("./admin/layout.css");
+@import url("./admin/utilities.css");

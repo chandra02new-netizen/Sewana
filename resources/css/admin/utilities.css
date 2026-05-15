@@ -1,0 +1,68 @@
+/* Legacy order/detail helpers */
+.order-card-right {
+    min-height: 100%;
+}
+
+/* ==============================================================
+   ========== ORDER DETAIL HELPERS ==========
+   ============================================================== */
+.border-dashed {
+    border-style: dashed !important;
+    border-width: 2px !important;
+    border-color: #dee2e6 !important;
+}
+
+/* ==============================================================
+   ========== PRINT STYLES ==========
+   ============================================================== */
+@media print {
+    .btn,
+    .d-print-none,
+    form {
+        display: none !important;
+    }
+
+    .card {
+        border: 1px solid #eee !important;
+        box-shadow: none !important;
+    }
+
+    body {
+        background-color: white !important;
+    }
+
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+}
+
+/* ==============================================================
+   ========== USER PAGE HELPERS ==========
+   ============================================================== */
+.avatar-circle {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.user-card-hover {
+    transition: all 0.2s ease;
+}
+
+.user-card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08) !important;
+}
+
+.input-group:focus-within {
+    box-shadow: 0 0 0 4px rgba(33, 37, 41, 0.1) !important;
+}

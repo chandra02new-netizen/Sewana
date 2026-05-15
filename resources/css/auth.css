@@ -1,0 +1,226 @@
+/* ==============================================================
+   AUTH.CSS - Login, register, and Breeze auth fallback pages
+   ============================================================== */
+
+:root {
+    --auth-bg-dark: #0b0f19;
+    --auth-bg-card: rgba(255, 255, 255, 0.03);
+    --auth-border-light: rgba(255, 255, 255, 0.08);
+    --auth-primary: #3b82f6;
+}
+
+.auth-page {
+    margin: 0;
+    overflow-x: hidden;
+    background-color: var(--auth-bg-dark);
+    color: #f8fafc;
+    font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.auth-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.auth-left {
+    position: relative;
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 10%;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0f172a, var(--auth-bg-dark));
+}
+
+.auth-left::before {
+    content: "";
+    position: absolute;
+    top: 20%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+    z-index: 0;
+}
+
+.auth-register .auth-left::before {
+    top: -10%;
+}
+
+.brand-content {
+    z-index: 1;
+}
+
+.auth-left h1 {
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+}
+
+.auth-left p {
+    max-width: 450px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.auth-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    border-left: 1px solid var(--auth-border-light);
+    background-color: var(--auth-bg-dark);
+}
+
+.card-login,
+.card-register {
+    width: 100%;
+    max-width: 420px;
+    padding: 40px;
+    border: 1px solid var(--auth-border-light);
+    border-radius: 24px;
+    background: var(--auth-bg-card);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.auth-page .form-label {
+    margin-bottom: 8px;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.input-group-custom {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group-custom i {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    color: #64748b;
+    font-size: 1.1rem;
+    transform: translateY(-50%);
+    transition: 0.3s;
+}
+
+.auth-page .form-control {
+    padding: 12px 16px 12px 45px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.auth-page .form-control:focus {
+    border-color: var(--auth-primary);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+.auth-page .form-control:focus + i,
+.auth-page .form-control:not(:placeholder-shown) + i {
+    color: var(--auth-primary);
+}
+
+.btn-login,
+.btn-register {
+    width: 100%;
+    margin-top: 10px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #fff;
+    color: #0f172a;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover,
+.btn-register:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
+
+.auth-link,
+.login-link {
+    color: var(--auth-primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.auth-link:hover,
+.login-link:hover {
+    color: #60a5fa;
+    text-decoration: underline;
+}
+
+.auth-page .form-check-input {
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.auth-page .form-check-input:checked {
+    border-color: var(--auth-primary);
+    background-color: var(--auth-primary);
+}
+
+.auth-page .form-check-label {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+}
+
+.auth-brand-dot {
+    width: 14px;
+    height: 14px;
+}
+
+.auth-mobile-icon {
+    width: 48px;
+    height: 48px;
+}
+
+.auth-security-card {
+    max-width: 350px;
+    border: 1px solid var(--auth-border-light);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.auth-security-caption {
+    font-size: 0.75rem;
+}
+
+@media (max-width: 991px) {
+    .auth-left {
+        display: none;
+    }
+
+    .auth-right {
+        border-left: none;
+    }
+
+    .card-login,
+    .card-register {
+        padding: 20px;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+    }
+}

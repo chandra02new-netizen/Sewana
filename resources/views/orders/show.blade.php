@@ -1,0 +1,358 @@
+@extends('layouts.admin')
+
+@section('content')
+    <div class="container py-4">
+        {{-- Header Navigation --}}
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <h3 class="fw-bold text-dark mb-0 admin-page-title fs-3">Detail Pesanan</h3>
+                    <span
+                        class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 rounded-pill px-3 py-1">
+                        #{{ $order->id }}
+                    </span>
+                </div>
+                <p class="text-muted small mb-0">
+                    <i class="bi bi-clock me-1"></i> Dibuat pada: {{ $order->created_at?->format('d M Y, H:i') }}
+                </p>
+            </div>
+            <a href="{{ url()->previous() }}" class="btn btn-outline-dark rounded-pill px-4 shadow-sm fw-medium">
+                <i class="bi bi-arrow-left me-2"></i> Kembali
+            </a>
+        </div>
+
+        {{-- Alert Notification --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        @elseif (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+            </div>
+        @endif
+
+        {{-- PHP Variables Preparation --}}
+        @php
+            $status = $order->order_status;
+
+            // Status Data modern
+            $statusData = match ($status) {
+                'pending' => ['color' => 'warning', 'label' => 'Menunggu', 'icon' => 'clock-history'],
+                'approved' => ['color' => 'primary', 'label' => 'Disetujui', 'icon' => 'hand-thumbs-up'],
+                'rented' => ['color' => 'info', 'label' => 'Sedang Disewa', 'icon' => 'arrow-repeat'],
+                'returned' => ['color' => 'success', 'label' => 'Dikembalikan', 'icon' => 'check-circle'],
+                'cancelled' => ['color' => 'danger', 'label' => 'Dibatalkan', 'icon' => 'x-circle'],
+                default => ['color' => 'secondary', 'label' => 'Tidak Diketahui', 'icon' => 'question-circle'],
+            };
+
+            $paymentClass = $order->payment_status === 'paid' ? 'success' : 'danger';
+            $paymentLabel = $order->payment_status === 'paid' ? 'Sudah Dibayar' : 'Belum Dibayar';
+            $paymentIcon = $order->payment_status === 'paid' ? 'check-circle' : 'x-circle';
+
+            $customerLabel = $order->customer_name ?: $order->user->name ?? 'Tidak Diketahui';
+            $productName = $order->product->name ?? 'Produk Tidak Ditemukan';
+            $productDesc = $order->product->description ?? '-';
+
+            $variantLabel = $order->variant
+                ? ($order->variant->size ?? '-') . ' / ' . ($order->variant->color ?? '-')
+                : 'Tidak ada varian';
+
+            $productImage = null;
+            if ($order->product && $order->product->images->first()) {
+                $productImage = asset('storage/' . $order->product->images->first()->image_url);
+            }
+
+            $identityPhoto = $order->identity_photo ? asset('storage/' . $order->identity_photo) : null;
+        @endphp
+
+        <div class="row g-4">
+            {{-- KOLOM KIRI: Informasi Produk & Tagihan --}}
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0 rounded-4 overflow-hidden h-100">
+
+                    <div class="bg-light p-4 admin-detail-hero">
+                        @if ($productImage)
+                            <div class="d-flex justify-content-center align-items-center h-100">
+                                <img src="{{ $productImage }}" class="rounded-4 shadow-sm admin-detail-image"
+                                    alt="Foto produk {{ $productName }}" width="520" height="260"
+                                    fetchpriority="high" decoding="async">
+                            </div>
+                        @else
+                            <div
+                                class="text-center text-muted d-flex flex-column justify-content-center align-items-center h-100">
+                                <i class="bi bi-image display-1 opacity-50"></i>
+                                <p class="mt-2 small">Tidak ada foto produk</p>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Product details --}}
+                    <div class="card-body p-4">
+                        <div class="mb-4">
+                            <h4 class="fw-bold text-dark mb-2">{{ $productName }}</h4>
+                            <p class="text-muted small mb-3">{{ Str::limit($productDesc, 100) }}</p>
+
+                            {{-- Badges Status & Pembayaran --}}
+                            <div class="d-flex gap-2 flex-wrap">
+                                <span
+                                    class="badge bg-{{ $statusData['color'] }} bg-opacity-10 text-{{ $statusData['color'] }} px-3 py-2 rounded-pill fw-semibold border border-{{ $statusData['color'] }} border-opacity-25">
+                                    <i class="bi bi-{{ $statusData['icon'] }} me-1"></i>
+                                    {{ strtoupper($statusData['label']) }}
+                                </span>
+                                <span
+                                    class="badge bg-{{ $paymentClass }} bg-opacity-10 text-{{ $paymentClass }} px-3 py-2 rounded-pill fw-semibold border border-{{ $paymentClass }} border-opacity-25">
+                                    <i class="bi bi-{{ $paymentIcon }} me-1"></i> {{ strtoupper($paymentLabel) }}
+                                </span>
+                            </div>
+                        </div>
+
+                        {{-- Rincian Sewa --}}
+                        <div class="bg-light rounded-4 p-3 mb-4">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="admin-mini-label">Varian</div>
+                                    <div class="fw-semibold text-dark">{{ $variantLabel }}</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="admin-mini-label">Durasi Sewa
+                                    </div>
+                                    <div class="fw-semibold text-dark">{{ $order->rent_days }} Hari</div>
+                                </div>
+                                <div class="col-12 mt-3 pt-3 border-top">
+                                    <div class="admin-mini-label">Periode Sewa
+                                    </div>
+                                    <div class="fw-semibold text-dark d-flex align-items-center">
+                                        {{ \Carbon\Carbon::parse($order->start_date)->format('d M Y') }}
+                                        <i class="bi bi-arrow-right mx-2 text-muted"></i>
+                                        {{ \Carbon\Carbon::parse($order->end_date)->format('d M Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Tagihan --}}
+                        <div class="border rounded-4 p-3 border-secondary border-opacity-25">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted small">Harga per Hari</span>
+                                <span
+                                    class="fw-semibold text-dark">Rp{{ number_format($order->price_per_day, 0, ',', '.') }}</span>
+                            </div>
+                            <hr class="text-muted opacity-25 my-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark">Total Tagihan</span>
+                                <span
+                                    class="fw-bold text-primary fs-5">Rp{{ number_format($order->total_price, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- KOLOM KANAN: Data Pelanggan, Identitas, & Aksi --}}
+            <div class="col-lg-7 d-flex flex-column gap-4">
+
+                {{-- Data Pelanggan --}}
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4">
+                        <h6 class="fw-bold text-dark border-bottom pb-3 mb-4">
+                            <i class="bi bi-person-badge text-primary me-2"></i> Informasi Pelanggan
+                        </h6>
+                        <div class="row g-4">
+                            <div class="col-md-6 d-flex align-items-start gap-3">
+                                <div class="bg-light rounded-circle text-secondary admin-icon-box">
+                                    <i class="bi bi-person-fill fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="admin-mini-label">Nama Penyewa</div>
+                                    <div class="fw-semibold text-dark">{{ $customerLabel }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-start gap-3">
+                                <div class="bg-light rounded-circle text-secondary admin-icon-box">
+                                    <i class="bi bi-envelope-at-fill fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="admin-mini-label">Akun Sistem</div>
+                                    <div class="fw-semibold text-dark">{{ $order->user->name ?? 'Tamu/Offline' }}</div>
+                                    @if (isset($order->user->email))
+                                        <div class="text-muted small">{{ $order->user->email }}</div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex align-items-start gap-3">
+                                <div class="bg-light rounded-circle text-secondary admin-icon-box">
+                                    <i class="bi bi-geo-alt-fill fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="admin-mini-label">Alamat Lengkap</div>
+                                    <div class="fw-semibold text-dark">{{ $order->address ?? 'Alamat tidak disertakan' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Foto Identitas --}}
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                            <h6 class="fw-bold text-dark mb-0">
+                                <i class="bi bi-card-image text-primary me-2"></i> Foto Identitas (KTP/KTM)
+                            </h6>
+                            @if ($identityPhoto)
+                                <a class="btn btn-sm btn-outline-primary rounded-pill px-3" target="_blank"
+                                    rel="noopener" href="{{ $identityPhoto }}"
+                                    aria-label="Perbesar foto identitas {{ $customerLabel }}">
+                                    <i class="bi bi-arrows-fullscreen me-1"></i> Perbesar
+                                </a>
+                            @endif
+                        </div>
+
+                        @if ($identityPhoto)
+                            <div class="text-center bg-light rounded-4 p-3 border border-dashed">
+                                <img src="{{ $identityPhoto }}" class="img-fluid rounded-3 shadow-sm admin-proof-image"
+                                    alt="Foto identitas {{ $customerLabel }}" width="640" height="420"
+                                    loading="lazy" decoding="async">
+                            </div>
+                        @else
+                            <div class="text-center py-4 text-muted bg-light rounded-4 border border-dashed">
+                                <i class="bi bi-camera fs-1 opacity-50 mb-2 d-block"></i>
+                                Belum ada foto identitas yang dilampirkan.
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                {{-- Bukti Pembayaran --}}
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                            <h6 class="fw-bold text-dark mb-0">
+                                <i class="bi bi-receipt text-success me-2"></i> Bukti Pembayaran
+                            </h6>
+
+                            @if ($order->bukti_pembayaran)
+                                <a class="btn btn-sm btn-outline-success rounded-pill px-3" target="_blank"
+                                    rel="noopener" href="{{ asset('storage/' . $order->bukti_pembayaran) }}"
+                                    aria-label="Perbesar bukti pembayaran pesanan #{{ $order->id }}">
+                                    Perbesar
+                                </a>
+                            @endif
+                        </div>
+
+                        @if ($order->bukti_pembayaran)
+                            <div class="text-center bg-light rounded-4 p-3 border border-dashed">
+                                <img src="{{ asset('storage/' . $order->bukti_pembayaran) }}"
+                                    class="img-fluid rounded-3 shadow-sm admin-proof-image"
+                                    alt="Bukti pembayaran pesanan #{{ $order->id }}" width="640" height="420"
+                                    loading="lazy" decoding="async">
+                            </div>
+                        @else
+                            <div class="text-center py-4 text-muted bg-light rounded-4 border border-dashed">
+                                <i class="bi bi-image fs-1 opacity-50 mb-2 d-block"></i>
+                                Belum ada bukti pembayaran.
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                {{-- Panel Aksi Staff --}}
+                @hasanyrole('pegawai|pemilik')
+                    <div class="card shadow-sm border-0 rounded-4 border-start border-4 border-dark">
+                        <div class="card-body p-4">
+                            <h6 class="fw-bold text-dark mb-3">
+                                <i class="bi bi-sliders me-2"></i> Tindakan Petugas
+                            </h6>
+
+                            <div class="bg-light p-3 rounded-4 mb-3">
+                                {{-- Jika PENDING --}}
+                                @if ($status === 'pending')
+                                    <p class="text-muted small mb-3">Tinjau pesanan dan identitas pelanggan. Pilih
+                                        <b>Setujui</b> untuk menyetujui, atau <b>Batalkan</b> jika tidak memenuhi syarat.
+                                    </p>
+                                    <div class="d-flex gap-2">
+                                        <form action="{{ route('pegawai.orders.approve', $order->id) }}" method="POST"
+                                            class="flex-grow-1">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button class="btn btn-success w-100 rounded-pill fw-semibold shadow-sm">
+                                                <i class="bi bi-check-lg me-1"></i> Setujui Pesanan
+                                            </button>
+                                        </form>
+
+                                        <form action="{{ route('pegawai.orders.reject', $order->id) }}" method="POST"
+                                            class="flex-grow-1"
+                                            onsubmit="return confirm('Yakin ingin membatalkan pesanan ini?');">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button class="btn btn-outline-danger w-100 rounded-pill fw-semibold bg-white">
+                                                <i class="bi bi-x-lg me-1"></i> Batalkan Pesanan
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    {{-- Jika APPROVED --}}
+                                @elseif ($status === 'approved')
+                                    <p class="text-muted small mb-3">Pesanan telah disetujui. Atur status pembayaran dan klik
+                                        <b>Serah Barang</b> saat barang diambil pelanggan.
+                                    </p>
+                                    <form action="{{ route('pegawai.orders.handover', $order->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <div class="input-group mb-3 shadow-sm rounded-pill overflow-hidden border">
+                                            <label class="input-group-text bg-white border-0 text-muted"
+                                                for="paymentSelect"><i class="bi bi-wallet2"></i></label>
+                                            <select name="payment_status" id="paymentSelect"
+                                                class="form-select border-0 focus-ring focus-ring-light">
+                                                <option value="unpaid"
+                                                    {{ $order->payment_status === 'unpaid' ? 'selected' : '' }}>Tagihan Belum
+                                                    Dibayar</option>
+                                                <option value="paid"
+                                                    {{ $order->payment_status === 'paid' ? 'selected' : '' }}>Tagihan Sudah
+                                                    Lunas</option>
+                                            </select>
+                                        </div>
+                                        <button class="btn btn-primary w-100 rounded-pill fw-semibold shadow-sm py-2">
+                                            <i class="bi bi-box-seam me-1"></i> Serahkan Barang (Ubah ke Sedang Disewa)
+                                        </button>
+                                    </form>
+
+                                    {{-- Jika RENTED --}}
+                                @elseif ($status === 'rented')
+                                    <p class="text-muted small mb-3">Barang sedang disewa. Klik tombol di bawah ini jika barang
+                                        sudah dikembalikan oleh pelanggan.</p>
+                                    <form action="{{ route('pegawai.orders.returned', $order->id) }}" method="POST"
+                                        onsubmit="return confirm('Pastikan barang telah diterima dan dicek kondisinya. Selesaikan pesanan?');">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="btn btn-info w-100 rounded-pill fw-semibold text-white shadow-sm py-2">
+                                            <i class="bi bi-arrow-return-left me-1"></i> Barang Telah Dikembalikan
+                                        </button>
+                                    </form>
+
+                                    {{-- Jika RETURNED atau CANCELLED --}}
+                                @else
+                                    <div class="text-center py-3">
+                                        <div class="bg-secondary bg-opacity-10 text-secondary rounded-circle admin-icon-box mb-2">
+                                            <i class="bi bi-lock-fill fs-4"></i>
+                                        </div>
+                                        <h6 class="fw-bold text-dark mb-1">Pesanan Ditutup</h6>
+                                        <p class="text-muted small mb-0">Pesanan ini berstatus
+                                            <b>{{ strtoupper($statusData['label']) }}</b> dan tidak memerlukan aksi lebih lanjut.
+                                        </p>
+                                    </div>
+                                @endif
+                            </div>
+
+                        </div>
+                    </div>
+                @endhasanyrole
+            </div>
+        </div>
+    </div>
+
+    {{-- Sedikit CSS untuk mempercantik border dashed foto --}}
+@endsection
+

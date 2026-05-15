@@ -1,0 +1,309 @@
+/* Extracted from resources\views\landing.blade.php */
+
+:root {
+            --bg-dark: #0b0f19;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --primary-glow: rgba(59, 130, 246, 0.5);
+        }
+
+        body {
+            position: relative;
+            background:
+                radial-gradient(circle at 82% 14%, rgba(59, 130, 246, 0.14), transparent 28%),
+                radial-gradient(circle at 12% 72%, rgba(30, 41, 59, 0.72), transparent 34%),
+                linear-gradient(135deg, #0f172a 0%, var(--bg-dark) 46%, #080b12 100%);
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            isolation: isolate;
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.08) 0 1px, transparent 1.5px),
+                radial-gradient(circle at 74% 66%, rgba(59, 130, 246, 0.08) 0 1px, transparent 1.5px);
+            background-size: 44px 44px, 64px 64px;
+            opacity: 0.16;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: auto -180px -220px auto;
+            width: 620px;
+            height: 620px;
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.16) 0%, rgba(59, 130, 246, 0.08) 32%, transparent 68%);
+            filter: blur(8px);
+            opacity: 0.8;
+        }
+
+        body > section,
+        body > footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* NAVBAR GLASSMORPHISM */
+        .navbar {
+            background: rgba(11, 15, 25, 0.7) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-btn {
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            padding: 160px 0 100px;
+            text-align: center;
+        }
+
+        /* Light effect behind the hero */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+            border-radius: 50%;
+        }
+
+        .badge-hero {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-light);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .btn-primary-custom {
+            background: #fff;
+            color: #0f172a;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-primary-custom:hover {
+            background: #e2e8f0;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* FEATURES */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 40px 30px;
+            transition: 0.4s;
+            height: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* PRODUCTS */
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: 0.3s;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .product-img-wrapper {
+            position: relative;
+            padding-top: 100%;
+            /* 1:1 Aspect Ratio */
+            overflow: hidden;
+        }
+
+        .product-img-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .product-card:hover .product-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-sku {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* STATISTICS */
+        .stat-box {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border-light);
+            color: #64748b;
+        }
+
+.brand-dot-sm {
+    width: 12px;
+    height: 12px;
+}
+
+.brand-dot-md {
+    width: 16px;
+    height: 16px;
+}
+
+.nav-register-btn {
+    padding: 8px 20px;
+}
+
+.feature-icon-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.feature-icon-purple {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+}
+
+.border-soft {
+    border-color: var(--border-light) !important;
+}
+
+.stats-band {
+    border-color: var(--border-light) !important;
+    background: rgba(255, 255, 255, 0.01);
+}
+

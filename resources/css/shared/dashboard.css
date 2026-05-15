@@ -1,0 +1,224 @@
+/* Dashboard-specific styles */
+
+.dashboard-stats .card {
+    border-radius: 1rem;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease-in-out;
+}
+
+.dashboard-stats .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.popular-products .img-hover-zoom {
+    background: #f8f9fa;
+    height: 200px;
+    border-radius: 0.5rem 0.5rem 0 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.popular-products .product-img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.popular-products .no-image-box {
+    background: #f8f9fa;
+    border-radius: 0.5rem 0.5rem 0 0;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.modal-product-image img {
+    max-height: 600px;
+    object-fit: contain;
+    width: 100%;
+}
+
+.dashboard-title {
+    color: #212529;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.popular-products-title {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.dashboard-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.header-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1d23;
+    letter-spacing: -0.03em;
+}
+
+.glass-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 24px;
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.04);
+}
+
+.stats-card-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-card-icon.products {
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+.stats-card-icon.orders {
+    background: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+.stats-card-icon.customers {
+    background: rgba(13, 202, 240, 0.1);
+    color: #0dcaf0;
+}
+
+.stats-card-icon.staff {
+    background: rgba(108, 117, 125, 0.1);
+    color: #6c757d;
+}
+
+.stats-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+}
+
+.order-item {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 20px;
+    margin-bottom: 12px;
+    padding: 18px 25px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.order-item:hover {
+    transform: translateY(-2px);
+    background: #fdfdfd;
+    border-color: rgba(13, 110, 253, 0.25);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+.status-pill {
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 110px;
+    justify-content: center;
+    border: 1px solid transparent;
+}
+
+.status-pill.status-warning {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border-color: rgba(255, 193, 7, 0.2);
+}
+
+.status-pill.status-primary {
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+    border-color: rgba(13, 110, 253, 0.2);
+}
+
+.status-pill.status-info {
+    background: rgba(13, 202, 240, 0.1);
+    color: #0dcaf0;
+    border-color: rgba(13, 202, 240, 0.2);
+}
+
+.status-pill.status-success {
+    background: rgba(25, 135, 84, 0.1);
+    color: #198754;
+    border-color: rgba(25, 135, 84, 0.2);
+}
+
+.status-pill.status-danger {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border-color: rgba(220, 53, 69, 0.2);
+}
+
+.status-pill.status-secondary {
+    background: rgba(108, 117, 125, 0.1);
+    color: #6c757d;
+    border-color: rgba(108, 117, 125, 0.2);
+}
+
+.avatar-circle {
+    width: 38px;
+    height: 38px;
+    background: #1a1d23;
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.empty-state-card {
+    text-align: center;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 1rem;
+    border: 1px dashed rgba(108, 117, 125, 0.35);
+}
+
+.empty-state-icon {
+    width: 80px;
+    height: 80px;
+    background: #f8f9fa;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.card-hover {
+    transition: transform 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-3px);
+}

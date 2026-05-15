@@ -1,0 +1,94 @@
+/* ===================================================================
+   ADMIN PRODUCTS
+   Product grid, product cards, image sizing, and product modal overrides.
+   Loaded after public/css/admin.css and admin/pages.css.
+   =================================================================== */
+
+.admin-product-grid {
+    --bs-gutter-x: 1rem;
+    --bs-gutter-y: 1rem;
+}
+
+.product-card {
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.045) !important;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08) !important;
+}
+
+.product-img-container,
+.product-card__image,
+.img-hover-zoom {
+    height: 176px;
+    background: #f8fafc;
+}
+
+.product-img-container img,
+.product-card__img,
+.product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-card__meta,
+.product-card .card-body {
+    padding: 16px !important;
+}
+
+.product-card__title {
+    margin-bottom: 0.25rem;
+    color: #111827;
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.product-card__description {
+    min-height: 2.35rem;
+}
+
+.product-card__footer,
+.product-card .card-footer {
+    padding: 12px 14px 14px;
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+    background: #ffffff;
+}
+
+.product-card__actions {
+    gap: 8px !important;
+}
+
+.product-modal .table th {
+    width: 135px;
+}
+
+.product-modal__img {
+    max-height: 72vh;
+    object-fit: contain;
+}
+
+@media (max-width: 991.98px) {
+    .product-img-container,
+    .product-card__image,
+    .img-hover-zoom {
+        height: 168px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .admin-product-grid {
+        --bs-gutter-x: 0.85rem;
+        --bs-gutter-y: 0.85rem;
+    }
+
+    .product-img-container,
+    .product-card__image,
+    .img-hover-zoom {
+        height: 190px;
+    }
+}

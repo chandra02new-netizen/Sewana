@@ -1,0 +1,218 @@
+/* ==============================================================
+   ========== SIDEBAR & LAYOUT ==========
+   ============================================================== */
+.sidebar {
+    width: 220px;
+    min-height: 100vh;
+}
+
+.sidebar .nav-link.active {
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+/* ==============================================================
+   ========== PRODUCT CARD ==========
+   ============================================================== */
+.product-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column; /* Keep height consistent. */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+/* ==============================================================
+   ========== PRODUCT IMAGE AND CAROUSEL ==========
+   ============================================================== */
+.product-img {
+    background: #f8f9fa;
+    object-fit: contain;
+    padding: 5px;
+    height: 200px; /* Keep all image heights consistent. */
+    width: 100%;
+}
+
+.no-image-box {
+    background: #f1f1f1;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    border: 1px dashed #ccc;
+}
+
+/* Hover zoom */
+.img-hover-zoom {
+    height: 200px;
+    overflow: hidden !important;
+    background: #f8f9fa;
+}
+
+.img-hover-zoom img {
+    transition: transform 0.3s ease-in-out;
+}
+
+.img-hover-zoom:hover img {
+    transform: scale(1.1);
+}
+
+/* ==============================================================
+   ========== CAROUSEL CONTROLS ==========
+   ============================================================== */
+.product-card .carousel-control-prev,
+.product-card .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.8;
+    width: 40px;
+    height: 40px;
+    z-index: 10;
+    transition: opacity 0.2s;
+}
+
+.product-card .carousel-control-prev:hover,
+.product-card .carousel-control-next:hover {
+    opacity: 1;
+}
+
+.product-card .carousel-control-prev {
+    left: 10px;
+}
+
+.product-card .carousel-control-next {
+    right: 10px;
+}
+
+.product-card .carousel-control-prev-icon,
+.product-card .carousel-control-next-icon {
+    background-color: black;
+    border-radius: 50%;
+    padding: 10px;
+    background-size: 60% 60%;
+    filter: invert(1);
+}
+
+/* ==============================================================
+   ========== FORM & TOMBOL ==========
+   ============================================================== */
+.search-box input {
+    border-radius: 6px 0 0 6px;
+}
+
+.search-box button {
+    border-radius: 0 6px 6px 0;
+}
+
+.btn-sm {
+    font-size: 0.85rem;
+    border-radius: 10px;
+}
+
+/* ==============================================================
+   ========== TABLE & TEXT WRAPPING ==========
+   ============================================================== */
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.table th {
+    white-space: nowrap;
+    width: 150px;
+    background-color: #f8f9fa;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.modal .table td {
+    word-break: break-word !important;
+    white-space: pre-wrap !important;
+    max-width: 100% !important;
+}
+
+table td,
+.modal td,
+.card-body td {
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+    max-width: 100% !important;
+}
+
+.text-break,
+.text-wrap {
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+}
+
+/* ==============================================================
+   ========== UTILITIES ==========
+   ============================================================== */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.col-md-3 {
+    padding-right: 1rem !important;
+}
+
+/* ==============================================================
+   ========== PESANAN (ORDERS) STYLE ==========
+   ============================================================== */
+.order-card-right {
+    min-height: 220px; /* Keep the right column height consistent. */
+}
+
+/* All status badges. */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #212529;
+    width: 110px;
+    height: 35px;
+    border-radius: 50px;
+    text-transform: capitalize;
+    font-size: 0.85rem;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+/* All action buttons. */
+.btn-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-action:hover {
+    transform: scale(1.08);
+}
+
+/* Default badge colors, subtle but readable. */
+.bg-warning {
+    background-color: #ffd93d !important;
+    color: #333 !important;
+}
+
+.bg-secondary {
+    background-color: #d1d1d1 !important;
+    color: #030303 !important;
+}
+
